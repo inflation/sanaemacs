@@ -16,7 +16,8 @@
       (`ghci (spacemacs-haskell//setup-ghci))
       (`ghc-mod (spacemacs-haskell//setup-ghc-mod))
       (`intero (spacemacs-haskell//setup-intero))
-      (`dante (spacemacs-haskell//setup-dante)))))
+      (`dante (spacemacs-haskell//setup-dante))
+      (`lsp (spacemacs-haskell//setup-lsp)))))
 
 (defun spacemacs-haskell//setup-ghci ()
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
@@ -96,6 +97,19 @@
 
   (evil-define-key '(insert normal) intero-mode-map
     (kbd "M-.") 'intero-goto-definition))
+
+(defun spacemacs-haskell//setup-lsp ()
+  "Setup lsp backend."
+  (if (configuration-layer/layer-used-p 'lsp)
+      (progn
+        (spacemacs|add-company-backends
+          :backends company-lsp
+          :modes haskell-mode)
+        (require 'lsp-haskell)
+        (push 'lsp-ui-peek-find-definitions
+              spacemacs-jump-handlers)
+        (lsp-haskell-enable))
+    (message "`lsp' layer is not installed, please add `lsp' layer to your dofile.")))
 
 (defun spacemacs-haskell//disable-electric-indent ()
   "Disable electric indent mode if available"
