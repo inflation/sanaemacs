@@ -16,10 +16,10 @@
 (defconst spacemacs-buffer-version-info "0.300"
   "Current version used to display addition release information.")
 
-(defconst spacemacs-buffer-name "*spacemacs*"
+(defconst spacemacs-buffer-name "*sanaemacs*"
   "The name of the spacemacs buffer.")
 
-(defconst spacemacs-buffer-logo-title "[S P A C E M A C S]"
+(defconst spacemacs-buffer-logo-title "[S A N A E M A C S]"
   "The title displayed beneath the logo.")
 
 (defconst spacemacs-buffer-buttons-startup-lists-offset 25
@@ -77,8 +77,8 @@ Internal use, do not set this variable.")
 (with-eval-after-load 'evil
   (evil-make-overriding-map spacemacs-buffer-mode-map 'motion))
 
-(define-derived-mode spacemacs-buffer-mode fundamental-mode "Spacemacs buffer"
-  "Spacemacs major mode for startup screen."
+(define-derived-mode spacemacs-buffer-mode fundamental-mode "Sanaemacs buffer"
+  "Sanaemacs major mode for startup screen."
   :group 'spacemacs
   :syntax-table nil
   :abbrev-table nil
@@ -366,7 +366,7 @@ BOTCAPTION: a text to be encrusted at the bottom of the frame.
 ADDITIONAL-WIDGETS: a function for inserting a widget under the frame."
   (save-excursion
     (goto-char (point-min))
-    (search-forward "Search in Spacemacs\]") ; TODO: this is dirty
+    (search-forward "Search in Sanaemacs\]") ; TODO: this is dirty
     (forward-line)
     (let* ((buffer-read-only nil)
            (note (concat "\n"
@@ -518,11 +518,11 @@ If REDISPLAY is non-nil then force a redisplay as well"
   (when redisplay (spacemacs//redisplay)))
 
 (defun spacemacs-buffer/message (msg &rest args)
-  "Display MSG in *Messages* prepended with '(Spacemacs)'.
+  "Display MSG in *Messages* prepended with '(Sanaemacs)'.
 The message is displayed only if `init-file-debug' is non nil.
 ARGS: format string arguments."
   (when init-file-debug
-    (message "(Spacemacs) %s" (apply 'format msg args))))
+    (message "(Sanaemacs) %s" (apply 'format msg args))))
 
 (defvar spacemacs-buffer--errors nil
   "List of errors during startup.")
@@ -531,7 +531,7 @@ ARGS: format string arguments."
   "Display MSG as an Error message in `*Messages*' buffer.
 ARGS: format string arguments."
   (let ((msg (apply 'format msg args)))
-    (message "(Spacemacs) Error: %s" msg)
+    (message "(Sanaemacs) Error: %s" msg)
     (when message-log-max
       (add-to-list 'spacemacs-buffer--errors msg 'append))))
 
@@ -542,7 +542,7 @@ ARGS: format string arguments."
   "Display MSG as a warning message but in buffer `*Messages*'.
 ARGS: format string arguments."
   (let ((msg (apply 'format msg args)))
-    (message "(Spacemacs) Warning: %s" msg)
+    (message "(Sanaemacs) Warning: %s" msg)
     (when message-log-max
       (add-to-list 'spacemacs-buffer--warnings msg 'append))))
 
@@ -558,7 +558,7 @@ If MESSAGEBUF is not nil then MSG is also written in message buffer."
     (let ((buffer-read-only nil))
       (insert msg)
       (when messagebuf
-        (message "(Spacemacs) %s" msg)))))
+        (message "(Sanaemacs) %s" msg)))))
 
 (defun spacemacs-buffer/replace-last-line (msg &optional messagebuf)
   "Replace the last line of the spacemacs buffer with MSG.
@@ -569,7 +569,7 @@ If MESSAGEBUF is not nil then MSG is also written in message buffer."
       (delete-region (line-beginning-position) (point-max))
       (insert msg)
       (when messagebuf
-        (message "(Spacemacs) %s" msg)))))
+        (message "(Sanaemacs) %s" msg)))))
 
 (defun spacemacs-buffer/loading-animation ()
   "Display the progress bar by chunks of size `spacemacs--loading-dots-chunk-threshold'."
@@ -625,7 +625,7 @@ REAL-WIDTH: the real width of the line.  If the line contains an image, the size
     (end-of-line)))
 
 (defun spacemacs-buffer//insert-buttons ()
-  "Create and insert the interactive buttons under Spacemacs banner."
+  "Create and insert the interactive buttons under Sanaemacs banner."
   (goto-char (point-max))
   (spacemacs-buffer||add-shortcut "m" "[?]" t)
   (widget-create 'url-link
@@ -638,14 +638,14 @@ REAL-WIDTH: the real width of the line.  If the line contains an image, the size
   (insert " ")
   (widget-create 'url-link
                  :tag (propertize "Homepage" 'face 'font-lock-keyword-face)
-                 :help-echo "Open the Spacemacs Github page in your browser."
+                 :help-echo "Open the Sanaemacs Github page in your browser."
                  :mouse-face 'highlight
                  :follow-link "\C-m"
                  "http://spacemacs.org")
   (insert " ")
   (widget-create 'url-link
                  :tag (propertize "Documentation" 'face 'font-lock-keyword-face)
-                 :help-echo "Open the Spacemacs documentation in your browser."
+                 :help-echo "Open the Sanaemacs documentation in your browser."
                  :mouse-face 'highlight
                  :follow-link "\C-m"
                  "http://spacemacs.org/doc/DOCUMENTATION.html")
@@ -659,11 +659,11 @@ REAL-WIDTH: the real width of the line.  If the line contains an image, the size
                  "https://gitter.im/syl20bnr/spacemacs")
   (insert " ")
   (widget-create 'push-button
-                 :help-echo "Update Spacemacs core and layers."
+                 :help-echo "Update Sanaemacs core and layers."
                  :action (lambda (&rest ignore) (spacemacs/switch-to-version))
                  :mouse-face 'highlight
                  :follow-link "\C-m"
-                 (propertize "Update Spacemacs" 'face 'font-lock-keyword-face))
+                 (propertize "Update Sanaemacs" 'face 'font-lock-keyword-face))
   (let ((len (- (line-end-position)
                 (line-beginning-position))))
     (spacemacs-buffer//center-line)
@@ -700,9 +700,9 @@ REAL-WIDTH: the real width of the line.  If the line contains an image, the size
                  :follow-link "\C-m")
   (insert " ")
   (widget-create 'url-link
-                 :tag (propertize "Search in Spacemacs"
+                 :tag (propertize "Search in Sanaemacs"
                                   'face 'font-lock-function-name-face)
-                 :help-echo "Search Spacemacs contents."
+                 :help-echo "Search Sanaemacs contents."
                  :action
                  (lambda (&rest ignore)
                    (let ((comp-frontend
@@ -1013,7 +1013,7 @@ SEQ, START and END are the same arguments as for `cl-subseq'"
           (spacemacs-buffer/set-mode-line
            (format
             (concat "%s error(s) at startup! "
-                    "Spacemacs may not be able to operate properly.")
+                    "Sanaemacs may not be able to operate properly.")
             configuration-layer-error-count) t))
       (spacemacs-buffer/set-mode-line spacemacs--default-mode-line)
       (spacemacs-buffer-mode))
@@ -1087,10 +1087,10 @@ REFRESH if the buffer should be redrawn."
   (spacemacs-buffer/goto-buffer t))
 
 (defalias 'spacemacs/home 'spacemacs-buffer/refresh
-  "Go to home Spacemacs buffer")
+  "Go to home Sanaemacs buffer")
 
 (defun spacemacs/home-delete-other-windows ()
-  "Open home Spacemacs buffer and delete other windows.
+  "Open home Sanaemacs buffer and delete other windows.
 Useful for making the home buffer the only visible buffer in the frame."
   (interactive)
   (spacemacs/home)

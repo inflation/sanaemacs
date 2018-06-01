@@ -32,7 +32,7 @@
   (expand-file-name (concat spacemacs-core-directory "banners/"))
   "Spacemacs banners directory.")
 (defconst spacemacs-banner-official-png
-  (expand-file-name (concat spacemacs-banner-directory "img/spacemacs.png"))
+  (expand-file-name (concat spacemacs-banner-directory "img/sanaemacs.png"))
   "Spacemacs official banner image.")
 (defconst spacemacs-badge-official-png
   (expand-file-name (concat spacemacs-banner-directory

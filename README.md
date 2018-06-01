@@ -1,7 +1,7 @@
 <a name="top" id="fork-destination-box"></a>
-<a href="http://spacemacs.org"><img src="https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg" alt="Made with Spacemacs"></a><a href="http://www.twitter.com/spacemacs"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a><br>
+<a href="http://spacemacs.org"><img src="https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg" alt="Made with Sanaemacs"></a><a href="http://www.twitter.com/spacemacs"><img src="http://i.imgur.com/tXSoThF.png" alt="Twitter" align="right"></a><br>
 - - -
-<p align="center"><img src="/doc/img/title2.png" alt="Spacemacs"/></p>
+<p align="center"><img src="/doc/img/sanaemacs-title.png" alt="Sanaemacs"/></p>
 <p align="center">
 <b><a href="http://spacemacs.org/doc/DOCUMENTATION#core-pillars">philosophy</a></b>
 |
@@ -34,7 +34,7 @@
 
 **Quick Install:**
 
-This assumes you don't have an existing Emacs setup and want to run Spacemacs as
+This assumes you don't have an existing Emacs setup and want to run Sanaemacs as
 your config. If you do have one, look at
 the [full installation instructions](#install) for other options.
 
@@ -65,7 +65,7 @@ the [full installation instructions](#install) for other options.
     - [Alternative installations](#alternative-installations)
         - [Modify HOME environment variable](#modify-home-environment-variable)
         - [Modify spacemacs-start-directory variable](#modify-spacemacs-start-directory-variable)
-    - [Spacemacs logo](#spacemacs-logo)
+    - [Sanaemacs logo](#sanaemacs-logo)
 - [Update](#update)
     - [Automatic update (on master branch)](#automatic-update-on-master-branch)
     - [Manual update (on master branch)](#manual-update-on-master-branch)
@@ -75,28 +75,28 @@ the [full installation instructions](#install) for other options.
 - [Contributions](#contributions)
 - [Communities](#communities)
 - [License](#license)
-- [Supporting Spacemacs](#supporting-spacemacs)
+- [Supporting Sanaemacs](#supporting-spacemacs)
 
 <!-- markdown-toc end -->
 
 # Introduction
-Spacemacs is a new way of experiencing Emacs -- it's a sophisticated and
+Sanaemacs is a new way of experiencing Emacs -- it's a sophisticated and
 polished set-up, focused on ergonomics, mnemonics and consistency.
 
 Just clone and launch it, then press the space bar to explore the interactive
 list of carefully-chosen key bindings. You can also press the home buffer's
 `[?]` button for some great first key bindings to try.
 
-Spacemacs can be used naturally by both Emacs and Vim users -- you can even mix
+Sanaemacs can be used naturally by both Emacs and Vim users -- you can even mix
 the two editing styles. Being able to quickly switch between input styles, makes
-Spacemacs a great tool for pair-programming.
+Sanaemacs a great tool for pair-programming.
 
-Spacemacs is currently in beta, and any contributions are very welcome.
+Sanaemacs is currently in beta, and any contributions are very welcome.
 
 ![spacemacs_python](doc/img/spacemacs-python.png)
 
 # Features
-- **Great documentation:** access the Spacemacs documentation with
+- **Great documentation:** access the Sanaemacs documentation with
 <kbd>SPC h SPC</kbd>.
 - **Beautiful GUI:** you'll love the distraction free UI and its functional
 mode-line.
@@ -124,12 +124,12 @@ If you prefer IRC, connect to the [Gitter Chat IRC server][] and join the
 `#syl20bnr/spacemacs` channel.
 
 # Prerequisites
-Spacemacs is an extension of a popular text editor called Emacs. Thus you need
-to first install base Emacs and then download the Spacemacs extension files with
+Sanaemacs is an extension of a popular text editor called Emacs. Thus you need
+to first install base Emacs and then download the Sanaemacs extension files with
 Git.
 
 ## Emacs
-Spacemacs requires Emacs 25.1 or above. The development version of Emacs is not
+Sanaemacs requires Emacs 25.1 or above. The development version of Emacs is not
 *officially* supported, but it should nevertheless be expected to work.
 
 Some modes require third-party tools that you'll have to install via your
@@ -138,7 +138,7 @@ favorite package manager.
 ### Linux distros
 Install the `emacs` package with your linux distributions package manager.
 
-Do not install the `xemacs` package. It's not supported by Spacemacs. XEmacs is
+Do not install the `xemacs` package. It's not supported by Sanaemacs. XEmacs is
 an old fork of Emacs. The X in its name is unrelated to X11.
 
 Emacs has graphical support.
@@ -197,14 +197,14 @@ brew tap caskroom/fonts
 brew cask install font-source-code-pro
 ```
 
-#### Install Spacemacs
+#### Install Sanaemacs
 
 ```
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 ```
 
 **Notes:**
-After completing the Spacemacs [install process](#install), then it's also
+After completing the Sanaemacs [install process](#install), then it's also
 recommended to add the [osx layer][] to your [dotfile][]. Installation
 instructions are available in the documentation for the [osx layer][].
 
@@ -216,7 +216,7 @@ You'll also need `gzip` and put it in your path, to download it go to the
 [GNUWin32 project page][gzip-for-windows]
 
 Be sure to declare an environment variable named `HOME` that's pointing to your
-user directory `C:\Users\<username>`. Then you can clone Spacemacs into that
+user directory `C:\Users\<username>`. Then you can clone Sanaemacs into that
 directory.
 
 Sometimes you'll get the following error when you first start Emacs:
@@ -247,7 +247,7 @@ For efficient searches we recommend installing `pt` ([the platinum searcher][]).
    mv .emacs .emacs.bak
    ```
 
-   Don't forget to backup and *remove* the `~/.emacs` file. Otherwise Spacemacs
+   Don't forget to backup and *remove* the `~/.emacs` file. Otherwise Sanaemacs
    **WILL NOT** be able to load. Because that file prevents Emacs from loading
    the proper initialization file.
 
@@ -259,7 +259,7 @@ For efficient searches we recommend installing `pt` ([the platinum searcher][]).
 
    `master` is the stable branch and it is _immutable_, **DO NOT** make any
    modification to it or you will break the update mechanism. If you want to
-   fork Spacemacs safely, use the `develop` branch where you'll handle updates
+   fork Sanaemacs safely, use the `develop` branch where you'll handle updates
    manually.
 
    **Note for Windows users**
@@ -293,11 +293,11 @@ For efficient searches we recommend installing `pt` ([the platinum searcher][]).
    font settings.
 
 4. Launch Emacs, and answer the questions in the Dotfile wizard installer. If
-   you are new to Emacs and Spacemacs, then it's fine to just accept the default
+   you are new to Emacs and Sanaemacs, then it's fine to just accept the default
    choices. It's easy to try the other choices later, without having to
-   reinstall Spacemacs. They can be changed in the dotfile `~/.spacemacs`.
+   reinstall Sanaemacs. They can be changed in the dotfile `~/.spacemacs`.
 
-   After answering the questions, then Spacemacs starts downloading and
+   After answering the questions, then Sanaemacs starts downloading and
    installing the packages it requires. When the packages have been installed.
    Restart Emacs to complete the installation.
 
@@ -325,12 +325,12 @@ you're curious, you can find out why these occur [here][compilation-warnings].
 If the mode-line turns red then be sure to consult the [FAQ][FAQ.org].
 
 ## Alternative installations
-There are currently, two supported, alternative locations, for a Spacemacs
+There are currently, two supported, alternative locations, for a Sanaemacs
 configuration.
 
 ### Modify HOME environment variable
-This solution is ideal for quickly trying Spacemacs without compromising your
-existing configuration. Clone Spacemacs outside the Emacs dotdirectory
+This solution is ideal for quickly trying Sanaemacs without compromising your
+existing configuration. Clone Sanaemacs outside the Emacs dotdirectory
 `~/.emacs.d` and modify the HOME environment variable.
 
 ```sh
@@ -343,8 +343,8 @@ Note: If you're using the Fish shell, then you'll need to modify the last
 command to: `env HOME=$HOME/spacemacs emacs`
 
 ### Modify spacemacs-start-directory variable
-This solution is better suited to "embed" Spacemacs into your own configuration.
-If you've cloned Spacemacs into `~/.emacs.d/spacemacs/`, then drop the following
+This solution is better suited to "embed" Sanaemacs into your own configuration.
+If you've cloned Sanaemacs into `~/.emacs.d/spacemacs/`, then drop the following
 lines in the `~/.emacs.d/init.el` file:
 
 ```elisp
@@ -352,7 +352,7 @@ lines in the `~/.emacs.d/init.el` file:
 (load-file (concat spacemacs-start-directory "init.el"))
 ```
 
-## Spacemacs logo
+## Sanaemacs logo
 For Ubuntu users, follow this guide to
 [change the logo in Unity][cpaulik-unity-icon].
 
@@ -360,9 +360,9 @@ For Mac users, you need to [download the .icns version of the logo][icon-reposit
 then [change the logo on the Dock][icon-mac-instructions].
 
 # Update
-Spacemacs shows a notification when a new version is available (only when you
+Sanaemacs shows a notification when a new version is available (only when you
 are on the default `master` branch). If you are on the `develop` branch then
-you'll have to update the Spacemacs repository manually.
+you'll have to update the Sanaemacs repository manually.
 
 ## Automatic update (on master branch)
 When a new version is available then a little arrow appears in the mode-line.
@@ -373,7 +373,7 @@ that you have an older version.
 
 ![powerline_update](doc/img/powerline-update.png)
 
-Click on the arrow to update Spacemacs to the latest version.
+Click on the arrow to update Sanaemacs to the latest version.
 
 ## Manual update (on master branch)
 Remove the `<` and `>` angle brackets when you're typing the lines below into
@@ -402,8 +402,8 @@ instance to revert to version `0.200`, type the following command:
    git checkout origin/release-0.200
    ```
 
-**After updating Spacemacs (either manually or automatically), then you also
-should check if any updates are available for your packages. On the Spacemacs
+**After updating Sanaemacs (either manually or automatically), then you also
+should check if any updates are available for your packages. On the Sanaemacs
 Home Buffer `SPC b h`, click (press `RET`) on the `[Update Packages]` button.**
 
 # Quotes
@@ -419,7 +419,7 @@ Home Buffer `SPC b h`, click (press `RET`) on the `[Update Packages]` button.**
      That is all»
 
 # Contributions
-Spacemacs is a community-driven project, it needs _you_ to keep it up to date
+Sanaemacs is a community-driven project, it needs _you_ to keep it up to date
 and to propose great and useful configurations for all the things!
 
 Before contributing be sure to consult the
@@ -435,34 +435,34 @@ Here is a throughput graph of the repository for the last few weeks:
 - [Reddit]
 
 # License
-The license is GPLv3 for all parts specific to Spacemacs, this includes:
+The license is GPLv3 for all parts specific to Sanaemacs, this includes:
 - the initialization and core files
 - all the layer files
 - the documentation
 
 For the packages shipped in this repository, you can refer to the files header.
 
-[Spacemacs logo][] by [Nasser Alshammari][] released under a
+[Sanaemacs logo][] by [Nasser Alshammari][] released under a
 [Creative Commons Attribution-ShareAlike 4.0 International License.](http://creativecommons.org/licenses/by-sa/4.0/)
 
-# Supporting Spacemacs
-The best way to support Spacemacs is to contribute to it either by reporting
+# Supporting Sanaemacs
+The best way to support Sanaemacs is to contribute to it either by reporting
 bugs, helping the community on the [Gitter Chat][] or sending pull requests.
 
-You can show your love for the project by getting cool Spacemacs t-shirts, mugs
-and more in the [Spacemacs Shop][].
+You can show your love for the project by getting cool Sanaemacs t-shirts, mugs
+and more in the [Sanaemacs Shop][].
 
 If you want to show your support financially, then you can contribute to
 [Bountysource][], or buy a drink for the maintainer by clicking on the
 [Paypal badge](#top).
 
 If you used spacemacs in a project, and you want to show that fact, you can use
-the spacemacs badge: [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
+the spacemacs badge: [![Built with Sanaemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
 
 - For Markdown:
 
    ```
-   [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
+   [![Built with Sanaemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
    ```
 
 - For HTML:
@@ -498,7 +498,7 @@ Thank you!
 [gzip-for-windows]: http://gnuwin32.sourceforge.net/packages/gzip.htm
 [the platinum searcher]: https://github.com/monochromegane/the_platinum_searcher
 [so-server-unsafe]: http://stackoverflow.com/questions/885793/emacs-error-when-calling-server-start
-[Spacemacs logo]: https://github.com/nashamri/spacemacs-logo
+[Sanaemacs logo]: https://github.com/nashamri/spacemacs-logo
 [Nasser Alshammari]: https://github.com/nashamri
 [compilation-warnings]: https://github.com/quelpa/quelpa/issues/90#issuecomment-137982713
 [cpaulik-unity-icon]: http://splendidabacus.com/posts/2015/03/spacemacs-unity-icon/
@@ -512,5 +512,5 @@ Thank you!
 [build_source]: https://www.gnu.org/software/emacs/manual/html_node/efaq/Installing-Emacs.html
 [Bountysource]: https://salt.bountysource.com/teams/spacemacs
 [Source Code Pro]: https://github.com/adobe-fonts/source-code-pro
-[Spacemacs Shop]: https://shop.spreadshirt.com/spacemacs-shop
+[Sanaemacs Shop]: https://shop.spreadshirt.com/spacemacs-shop
 [Git]: https://git-scm.com/downloads
