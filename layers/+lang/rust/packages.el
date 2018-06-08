@@ -13,6 +13,7 @@
   '(
     cargo
     company
+    counsel-gtags
     racer
     flycheck
     (flycheck-rust :requires flycheck)
@@ -20,6 +21,7 @@
     exec-path-from-shell
     helm-gtags
     rust-mode
+    smartparens
     toml-mode
     ))
 
@@ -96,7 +98,7 @@
     :pre-config
     (let ((var "RUST_SRC_PATH"))
       (unless (or (member var exec-path-from-shell-variables) (getenv var))
-        (push var exec-path-from-shell-variables)))))
+        (add-to-list 'exec-path-from-shell-variables var)))))
 
 (defun rust/init-racer ()
   (use-package racer

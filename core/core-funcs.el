@@ -14,6 +14,11 @@
 (defvar spacemacs-repl-list '()
   "List of all registered REPLs.")
 
+(defmacro spacemacs|dotspacemacs-backward-compatibility (variable default)
+  "Return `if' sexp for backward compatibility with old dotspacemacs
+values."
+  `(if (boundp ',variable) ,variable ',default))
+
 (defun spacemacs/system-is-mac ()
   (eq system-type 'darwin))
 (defun spacemacs/system-is-linux ()
@@ -58,7 +63,7 @@ Currently this function infloops when the list is circular."
 (defun spacemacs/plist-get (plist prop)
   "Get the value associated to PROP in PLIST, a modified plist.
 
-You should always use this function instread of builtin `plist-get'
+You should always use this function instead of builtin `plist-get'
 in Spacemacs.
 
 A modified plist is one where keys are keywords and values are

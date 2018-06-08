@@ -67,7 +67,7 @@
   (evil-mode 1)
 
   ;; Use evil as a default jump handler
-  (push 'evil-goto-definition spacemacs-default-jump-handlers)
+  (add-to-list 'spacemacs-default-jump-handlers 'evil-goto-definition)
 
   (require 'cl)
   ;; State cursors
@@ -79,10 +79,10 @@
   (define-key evil-normal-state-map (kbd dotspacemacs-ex-command-key) 'evil-ex)
   (define-key evil-visual-state-map (kbd dotspacemacs-ex-command-key) 'evil-ex)
   (define-key evil-motion-state-map (kbd dotspacemacs-ex-command-key) 'evil-ex)
-  (setq evil-ex-substitute-global dotspacemacs-ex-substitute-global)
+  (setq evil-ex-substitute-global vim-style-ex-substitute-global)
 
   ;; evil-want-Y-yank-to-eol must be set via customize to have an effect
-  (customize-set-variable 'evil-want-Y-yank-to-eol dotspacemacs-remap-Y-to-y$)
+  (customize-set-variable 'evil-want-Y-yank-to-eol vim-style-remap-Y-to-y$)
 
   ;; bind evil-jump-forward for GUI only.
   (define-key evil-motion-state-map [C-i] 'evil-jump-forward)
@@ -114,12 +114,12 @@
   (add-hook 'after-change-major-mode-hook 'spacemacs//set-evil-shift-width 'append)
 
   ;; Keep the region active when shifting
-  (when dotspacemacs-retain-visual-state-on-shift
+  (when vim-style-retain-visual-state-on-shift
     (evil-map visual "<" "<gv")
     (evil-map visual ">" ">gv"))
 
   ;; move selection up and down
-  (when dotspacemacs-visual-line-move-text
+  (when vim-style-visual-line-move-text
     (define-key evil-visual-state-map "J" (concat ":m '>+1" (kbd "RET") "gv=gv"))
     (define-key evil-visual-state-map "K" (concat ":m '<-2" (kbd "RET") "gv=gv")))
 
@@ -255,7 +255,7 @@
   (define-key evil-inner-text-objects-map "g" 'evil-inner-buffer)
 
   ;; turn off evil in corelv buffers
-  (push '("\\*LV\\*") evil-buffer-regexps)
+  (add-to-list 'evil-buffer-regexps '("\\*LV\\*"))
 
   ;; replace `dired-goto-file' with `helm-find-files', since `helm-find-files'
   ;; can do the same thing and with fuzzy matching and other features.
@@ -315,6 +315,9 @@
 
   ;; Needed to avoid nil variable error before update to recent which-key
   (defvar which-key-replacement-alist nil)
+  ;; Reset to the default or customized value before adding our values in order
+  ;; to make this initialization code idempotent.
+  (custom-reevaluate-setting 'which-key-replacement-alist)
   ;; Replace rules for better naming of functions
   (let ((new-descriptions
          ;; being higher in this list means the replacement is applied later
@@ -541,7 +544,6 @@
 (defun spacemacs-bootstrap/init-spacemacs-theme ()
   (use-package spacemacs-theme
     :defer t
-    :init
-    (progn
-      (setq spacemacs-theme-comment-bg t)
-      (setq spacemacs-theme-org-height t))))
+    :init (setq spacemacs-theme-keyword-italic t
+                spacemacs-theme-comment-bg t
+                spacemacs-theme-org-height t)))
