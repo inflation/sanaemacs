@@ -94,6 +94,7 @@
     - [[#layout-key-bindings][Layout key bindings]]
   - [[#workspaces][Workspaces]]
     - [[#workspace-key-bindings][Workspace key bindings]]
+- [[#environment-variables-and-path-from-the-shell][Environment variables and PATH from the shell]]
 - [[#commands][Commands]]
   - [[#vim-key-bindings][Vim key bindings]]
     - [[#escaping][Escaping]]
@@ -1715,6 +1716,24 @@ There are also some handy globally available key bindings related to workspaces:
 | ~gt~        | go to next workspace                 |
 | ~gT~        | go to previous workspace             |
 | ~SPC b W~   | go to workspace and window by buffer |
+
+* Environment variables and PATH from the shell
+When using the Emacs GUI environment variables defined by your shell may not
+be available to the Emacs process. This is especially true for macOS.
+
+The command to fetch the environment variables from your shell is very expensive
+and increases the startup time quite a lot.
+
+For this reason, Spacemacs caches the PATH value and some environment variables
+in the file located at =~/.emacs.d/.cache/.env-vars=.
+
+Any environment variables that are not found are still written to the cache file
+with the value =<VAR>-NOTFOUND-PLEASE-DEFINE-IN-YOUR-SHELL=.
+
+Spacemacs won't update the cached values by itself, if you want to update your
+shell variables then either delete the cache file or execute the interactive
+function =spacemacs/import-path= and restart Emacs to fetch any updated
+environment variables.
 
 * Commands
 ** Vim key bindings
@@ -3348,6 +3367,12 @@ export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -c"
 
 Tip: Remember to use ~:wq~ or ~C-x #~ after you are done editing the file in
 Emacs.
+
+You can set the location of the Emacs server socket by setting =dotspacemacs-server-socket-dir= in your =~./spacemacs=:
+
+#+BEGIN_SRC emacs-lisp
+(setq-default dotspacemacs-server-socket-dir "~/.emacs/server")
+#+END_SRC
 
 See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][Emacs as a Server]] in the official Emacs manual for more details.
 

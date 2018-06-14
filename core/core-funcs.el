@@ -30,17 +30,7 @@ values."
   ;; ns is returned instead of mac on Emacs 25+
   (memq (window-system) '(mac ns)))
 
-(defun spacemacs/run-prog-mode-hooks ()
-  "Runs `prog-mode-hook'. Useful for modes that don't derive from
-`prog-mode' but should."
-  (run-hooks 'prog-mode-hook))
-
-(defun spacemacs/run-text-mode-hooks ()
-  "Runs `text-mode-hook'. Useful for modes that don't derive from
-`text-mode' but should."
-  (run-hooks 'text-mode-hook))
-
-(defun spacemacs/mplist-get (plist prop)
+(defun spacemacs/mplist-get-values (plist prop)
   "Get the values associated to PROP in PLIST, a modified plist.
 
 A modified plist is one where keys are keywords and values are
@@ -60,8 +50,8 @@ Currently this function infloops when the list is circular."
       (push (pop tail) result))
     (nreverse result)))
 
-(defun spacemacs/plist-get (plist prop)
-  "Get the value associated to PROP in PLIST, a modified plist.
+(defun spacemacs/mplist-get-value (plist prop)
+  "Get a single value associated to PROP in PLIST, a modified plist.
 
 You should always use this function instead of builtin `plist-get'
 in Spacemacs.
@@ -73,15 +63,7 @@ If there are multiple properties with the same keyword, only the first property
 and its values is returned.
 
 Currently this function infloops when the list is circular."
-  (let ((tail plist)
-        result)
-    (while (and (consp tail) (not (eq prop (car tail))))
-      (pop tail))
-    ;; pop the found keyword
-    (pop tail)
-    (when (and (consp tail) (not (keywordp (car tail))))
-      (setq result (pop tail)))
-    result))
+  (car (spacemacs/mplist-get-values plist prop)))
 
 (defun spacemacs/mplist-remove (plist prop)
   "Return a copy of a modified PLIST without PROP and its values.
@@ -140,10 +122,10 @@ Supported properties:
 `:define-key CONS CELL'
     One or several cons cells (MAP . KEY) where MAP is a mode map and KEY is a
     key sequence string to be set with `define-key'. "
-  (let ((evil-leader (spacemacs/mplist-get props :evil-leader))
-        (evil-leader-for-mode (spacemacs/mplist-get props :evil-leader-for-mode))
-        (global-key (spacemacs/mplist-get props :global-key))
-        (def-key (spacemacs/mplist-get props :define-key)))
+  (let ((evil-leader (spacemacs/mplist-get-values props :evil-leader))
+        (evil-leader-for-mode (spacemacs/mplist-get-values props :evil-leader-for-mode))
+        (global-key (spacemacs/mplist-get-values props :global-key))
+        (def-key (spacemacs/mplist-get-values props :define-key)))
     (append
      (when evil-leader
        `((dolist (key ',evil-leader)
@@ -298,21 +280,6 @@ buffer."
         while (string-match regexp str start)
         do (setq start (match-end 0))
         finally return count))
-
-;; from https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-util.el#L38
-(defun spacemacs/add-to-hooks (fun hooks &optional append local)
-  "Add function to hooks"
-  (dolist (hook hooks)
-    (add-hook hook fun append local)))
-
-(defun spacemacs/add-all-to-hook (hook &rest funs)
-  "Add functions to hook."
-  (spacemacs/add-to-hook hook funs))
-
-(defun spacemacs/add-to-hook (hook funs)
-  "Add list of functions to hook."
-  (dolist (fun funs)
-    (add-hook hook fun)))
 
 (defun spacemacs/echo (msg &rest args)
   "Display MSG in echo-area without logging it in *Messages* buffer."

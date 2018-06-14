@@ -145,8 +145,10 @@
 
 (defun spacemacs-editing-visual/init-volatile-highlights ()
   (use-package volatile-highlights
+    :defer (spacemacs/defer 2)
     :config
     (progn
+      (require 'volatile-highlights)
       ;; additional extensions
       ;; evil
       (vhl/define-extension 'evil

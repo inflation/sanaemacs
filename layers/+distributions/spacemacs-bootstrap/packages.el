@@ -97,7 +97,9 @@
   (define-key evil-window-map (kbd "<right>") 'evil-window-right)
   (define-key evil-window-map (kbd "<up>") 'evil-window-up)
   (define-key evil-window-map (kbd "<down>") 'evil-window-down)
-  (spacemacs/set-leader-keys "re" 'evil-show-registers)
+  (spacemacs/set-leader-keys
+    "re" 'evil-show-registers
+    "sc" 'spacemacs/evil-search-clear-highlight)
   ;; motions keys for help buffers
   (evil-define-key 'motion help-mode-map (kbd "<escape>") 'quit-window)
   (evil-define-key 'motion help-mode-map (kbd "<tab>") 'forward-button)
@@ -287,8 +289,7 @@
   (evil-declare-ignore-repeat 'spacemacs/previous-error))
 
 (defun spacemacs-bootstrap/init-exec-path-from-shell ()
-  (require 'exec-path-from-shell)
-  (exec-path-from-shell-initialize))
+  (spacemacs//initialize-exec-path-from-shell))
 
 (defun spacemacs-bootstrap/init-hydra ()
   (require 'hydra)
@@ -326,6 +327,7 @@
            ("spacemacs/toggle-\\(.+\\)" . "\\1")
            ("spacemacs/alternate-buffer" . "last buffer")
            ("spacemacs/toggle-mode-line-\\(.+\\)" . "\\1")
+           ("lazy-helm/\\(.+\\)" . "\\1")
            ("avy-goto-word-or-subword-1" . "avy word")
            ("shell-command" . "shell cmd")
            ("spacemacs/default-pop-shell" . "open shell")

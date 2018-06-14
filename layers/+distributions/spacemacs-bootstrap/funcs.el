@@ -89,6 +89,11 @@ For evil states that also need an entry to `spacemacs-evil-cursors' use
         (evil-select-search-module 'evil-search-module 'isearch)
       (setq-default evil-search-module 'isearch)))))
 
+(defun spacemacs/evil-search-clear-highlight ()
+  "Clear evil-search or evil-ex-search persistent highlights."
+  (interactive)
+  (evil-ex-nohighlight)) ; `/' highlights
+
 (defun spacemacs/evil-smart-doc-lookup ()
   "Run documentation lookup command specific to the major mode.
 Use command bound to `SPC m h h` if defined, otherwise fall back
@@ -180,3 +185,42 @@ Example: (evil-map visual \"<\" \"<gv\")"
   "Custom hint documentation format for keys."
   (format (format "[%%%ds] %%%ds" key-width (- -1 doc-width))
           key doc))
+
+
+
+;; exec-path-from-shell
+
+(defun spacemacs//initialize-exec-path-from-shell (&optional force)
+  "Initialize exec-path and cache its value.
+Load from cache file if cache file exists and FORCE is nil."
+  (when (display-graphic-p)
+    (when force (delete-file spacemacs-env-vars-file))
+    (if (file-exists-p spacemacs-env-vars-file)
+        (load spacemacs-env-vars-file nil (not init-file-debug))
+      (require 'exec-path-from-shell)
+      (exec-path-from-shell-initialize)
+      (spacemacs/dump-vars-to-file '(exec-path) spacemacs-env-vars-file))))
+
+(defun spacemacs/import-path ()
+  "Import value of PATH."
+  (interactive)
+  (spacemacs//initialize-exec-path-from-shell t))
+
+(defun spacemacs/copy-env-list (vars)
+  "Copy list of env. VARS using `exec-path-from-shell'.
+Cache the found value in `spacemacs-env-vars-file'."
+  (dolist (var vars)
+    (unless (or (getenv var)
+                (null (configuration-layer/package-used-p
+                       'exec-path-from-shell)))
+      (require 'exec-path-from-shell)
+      (exec-path-from-shell-copy-env var)
+      (with-temp-file spacemacs-env-vars-file
+        (when (file-exists-p spacemacs-env-vars-file)
+          (insert-file-contents spacemacs-env-vars-file))
+        (print (list 'setenv var
+                     (if (getenv var)
+                         (getenv var)
+                       (format "%s-NOTFOUND-PLEASE-DEFINE-IN-YOUR-SHELL"
+                               var)))
+               (current-buffer))))))

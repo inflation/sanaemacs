@@ -20,6 +20,7 @@
 (require 'ht)
 (require 'core-dotspacemacs)
 (require 'core-funcs)
+(require 'core-progress-bar)
 (require 'core-spacemacs-buffer)
 
 (defvar configuration-layer--refresh-package-timeout dotspacemacs-elpa-timeout
@@ -418,7 +419,7 @@ cache folder.")
 
 (defun configuration-layer/load-lock-file ()
   "Load the .lock file"
-  (load configuration-layer-lock-file nil (not init-file-debug)))
+  (configuration-layer/load-file configuration-layer-lock-file))
 
 (defun configuration-layer/initialize ()
   "Initialize `package.el'."
@@ -447,7 +448,7 @@ cache folder.")
     (package-initialize 'noactivate)
     ;; hack to be sure to enable insalled org from Org ELPA repository
     (when (package-installed-p 'org-plus-contrib)
-      (configuration-layer/message "Initializing Org early...")
+      (spacemacs-buffer/message "Initializing Org early...")
       (configuration-layer//activate-package 'org-plus-contrib))))
 
 (defun configuration-layer//configure-quelpa ()
@@ -559,7 +560,7 @@ refreshed during the current session."
   ;; check if layer list has changed since last dump
   (when (file-exists-p
          configuration-layer--last-dotspacemacs-configuration-layers-file)
-    (load-file
+    (configuration-layer/load-file
      configuration-layer--last-dotspacemacs-configuration-layers-file))
   (let ((layers dotspacemacs-configuration-layers))
     (dotspacemacs|call-func dotspacemacs/layers "Calling dotfile layers...")
@@ -675,7 +676,7 @@ To prevent package from being installed or uninstalled set the variable
   (let ((file (concat configuration-layer-directory "auto-layer.el")))
     (when (file-exists-p file)
       (spacemacs-buffer/message "Loading auto-layer file...")
-      (load file nil (not init-file-debug)))))
+      (configuration-layer/load-file file))))
 
 (defun configuration-layer/create-layer ()
   "Ask the user for a configuration layer name and the layer
@@ -727,7 +728,7 @@ layer directory."
 (defun configuration-layer//select-packages (layer-specs packages)
   "Return the selected packages of LAYER-SPECS from given PACKAGES list."
   (let* ((value (when (listp layer-specs)
-                  (spacemacs/mplist-get layer-specs :packages)))
+                  (spacemacs/mplist-get-values layer-specs :packages)))
          (selected-packages (if (and (not (null (car value)))
                                      (listp (car value)))
                                 (car value)
@@ -768,23 +769,23 @@ If USEDP or `configuration-layer--load-packages-files' is non-nil then the
          layer-name)
       (let* ((dir (file-name-as-directory dir))
              (disabled (when (listp layer-specs)
-                         (spacemacs/mplist-get layer-specs :disabled-for)))
+                         (spacemacs/mplist-get-values layer-specs :disabled-for)))
              (enabled (if (and (listp layer-specs)
                                (memq :enabled-for layer-specs))
-                          (spacemacs/mplist-get layer-specs :enabled-for)
+                          (spacemacs/mplist-get-values layer-specs :enabled-for)
                         'unspecified))
              (variables (when (listp layer-specs)
-                          (spacemacs/mplist-get layer-specs :variables)))
+                          (spacemacs/mplist-get-values layer-specs :variables)))
              (shadow
               (if (and (listp layer-specs)
                        (memq :can-shadow layer-specs))
-                  (spacemacs/mplist-get layer-specs :can-shadow)
+                  (spacemacs/mplist-get-values layer-specs :can-shadow)
                 'unspecified))
              (packages-file (concat dir "packages.el"))
              (packages (when (and (null packages)
                                   (or usedp configuration-layer--load-packages-files)
                                   (file-exists-p packages-file))
-                         (load packages-file nil (not init-file-debug))
+                         (configuration-layer/load-file packages-file)
                          (symbol-value (intern (format "%S-packages"
                                                        layer-name)))))
              (selected-packages (if packages
@@ -1238,7 +1239,7 @@ USEDP if non-nil indicates that made packages are used packages."
   "Configure auto-installation of layer with name LAYER-NAME."
   (declare (indent 1))
   (when (configuration-layer//lazy-install-p layer-name)
-    (let ((extensions (spacemacs/mplist-get props :extensions))
+    (let ((extensions (spacemacs/mplist-get-values props :extensions))
           (interpreter (plist-get props :interpreter)))
       (when (configuration-layer/layer-used-p layer-name)
         (let* ((layer (configuration-layer/get-layer layer-name))
@@ -1563,8 +1564,10 @@ RNAME is the name symbol of another existing layer."
 
 (defun configuration-layer//set-layers-variables (layer-names)
   "Set the configuration variables for the passed LAYER-NAMES."
-  (mapc 'configuration-layer//set-layer-variables (mapcar '(lambda (lname) (configuration-layer/get-layer lname))
-                                        layer-names)))
+  (mapc 'configuration-layer//set-layer-variables
+        (mapcar (lambda (lname)
+                  (configuration-layer/get-layer lname))
+                layer-names)))
 
 (defun configuration-layer//set-layer-variables (layer)
   "Set the configuration variables for the passed LAYER."
@@ -1645,7 +1648,8 @@ RNAME is the name symbol of another existing layer."
     (when obj
       (dolist (file files)
         (let ((file (concat (oref obj :dir) file)))
-          (if (file-exists-p file) (load file nil (not init-file-debug))))))))
+          (if (file-exists-p file)
+              (configuration-layer/load-file file)))))))
 
 (defun configuration-layer/configured-packages-stats (packages)
   "Return a statistics alist regarding the number of configured PACKAGES."
@@ -1884,9 +1888,7 @@ RNAME is the name symbol of another existing layer."
 
 (defun configuration-layer//configure-packages (packages)
   "Configure all passed PACKAGES honoring the steps order."
-  (setq spacemacs-loading-dots-chunk-threshold
-        (/ (length configuration-layer--used-packages)
-           spacemacs-loading-dots-chunk-count))
+  (spacemacs/init-progress-bar (length packages))
   (spacemacs-buffer/message "+ Configuring bootstrap packages...")
   (configuration-layer//configure-packages-2
    (configuration-layer/filter-objects
@@ -1910,7 +1912,6 @@ RNAME is the name symbol of another existing layer."
   "Configure all passed PACKAGES."
   (let (packages-to-configure)
     (dolist (pkg-name packages)
-      (spacemacs-buffer/loading-animation)
       (let ((pkg (configuration-layer/get-package pkg-name)))
         (cond
          ((oref pkg :lazy-install)
@@ -2022,6 +2023,7 @@ LAYER must not be the owner of PKG."
 
 (defun configuration-layer//configure-package (pkg)
   "Configure PKG object, i.e. call its post-init function."
+  (spacemacs/update-progress-bar)
   (let* ((pkg-name (oref pkg :name))
          (owner (car (oref pkg :owners))))
     ;; init
@@ -2194,7 +2196,7 @@ to select one."
                                configuration-layer-rollback-info))))
       (spacemacs-buffer/append
        (format "\nRollbacking ELPA packages from slot %s...\n" slot-dir))
-      (load info-file nil (not init-file-debug))
+      (configuration-layer/load-file info-file)
       (let ((rollback-count (length update-packages-alist))
             (rollbacked-count 0))
         (spacemacs-buffer/append
@@ -2743,6 +2745,10 @@ install time in order to replace all `org' package installation by
   "Display MSG in *Messages* prepended with '(Spacemacs)'.
 ARGS: format string arguments."
   (message "(Spacemacs) %s" (apply 'format msg args)))
+
+(defun configuration-layer/load-file (file)
+  "Load file silently except if in debug mode."
+  (load file nil (not init-file-debug)))
 
 (provide 'core-configuration-layer)
 
