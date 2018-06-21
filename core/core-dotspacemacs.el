@@ -15,6 +15,11 @@
 (defconst dotspacemacs-test-results-buffer "*dotfile-test-results*"
   "Name of the buffer to display dotfile test results.")
 
+(defvar dotspacemacs--user-config-elapsed-time 0
+  "Time spent in `dotspacemacs/user-config' function.
+Useful for users in order to given them a hint of potential bottleneck in
+their configuration.")
+
 (let* ((env (getenv "SPACEMACSDIR"))
        (env-dir (when env (expand-file-name (concat env "/"))))
        (env-init (and env-dir (expand-file-name "init.el" env-dir)))
@@ -54,6 +59,21 @@ exists. Otherwise, fallback to ~/.spacemacs"))
   "Base distribution to use. This is a layer contained in the directory
 `+distributions'. For now available distributions are `spacemacs-base'
 or `spacemacs'.")
+
+(defvar dotspacemacs-import-env-vars-from-shell (and (display-graphic-p)
+                                           (or (eq system-type 'darwin)
+                                               (eq system-type 'gnu/linux)
+                                               (eq window-system 'x)))
+  "If non-nil then Spacemacs will import your PATH and environment variables
+from your default shell on startup. This is enabled by default for macOS users
+and X11 users.")
+
+(defvar dotspacemacs-import-env-vars-shell-file-name nil
+  "If nil then use the default shell is used to fetch the environment variables.
+Set this variable to a different shell executable path to import the environment
+variables from this shell. Note that `file-shell-name' is preserved and always
+points to the default shell. For instance to use your fish shell environment
+variables set this variable to `/usr/local/bin/fish'.")
 
 (defvar dotspacemacs-enable-emacs-pdumper nil
   "If non-nil then enable support for the portable dumper. You'll need
@@ -485,6 +505,14 @@ Returns non nil if the layer has been effectively inserted."
     (load-file (dotspacemacs/location))
     t))
 
+(defun dotspacemacs//profile-user-config (f &rest args)
+  "Compute time taken by the `dotspacemacs/user-config' function.
+Set the variable"
+  (let ((stime (current-time)))
+    (apply f args)
+    (setq dotspacemacs--user-config-elapsed-time
+          (float-time (time-subtract (current-time) stime)))))
+
 (defun dotspacemacs/sync-configuration-layers (&optional arg)
   "Synchronize declared layers in dotfile with spacemacs.
 
@@ -629,7 +657,8 @@ If ARG is non nil then Ask questions to the user before installing the dotfile."
     (if (file-exists-p dotspacemacs)
         (unless (with-demoted-errors "Error loading .spacemacs: %S"
                   (load dotspacemacs))
-          (dotspacemacs/safe-load)))))
+          (dotspacemacs/safe-load))))
+  (advice-add 'dotspacemacs/user-config :around 'dotspacemacs//profile-user-config))
 
 (defun spacemacs/title-prepare (title-format)
   "A string is printed verbatim except for %-constructs.

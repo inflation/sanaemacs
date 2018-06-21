@@ -11,6 +11,40 @@
 
 
 
+(defun spacemacs/loadenv ()
+  "Gets and sets all the environment variables from user shell."
+  (interactive)
+  (spacemacs-buffer/message "Importing environment variables..")
+  (require 'async nil t)
+  (async-start
+   `(lambda ()
+      ,(async-inject-variables
+        "\\`dotspacemacs-import-env-vars-shell-file-name\\'")
+      (if dotspacemacs-import-env-vars-shell-file-name
+          (let ((shell-file-name
+                 dotspacemacs-import-env-vars-shell-file-name))
+            (split-string (shell-command-to-string "env") "\n"))
+        (split-string (shell-command-to-string "env") "\n")))
+   (lambda (envvars)
+     (spacemacs-buffer/message "Imported environment variables:")
+     (dolist (env envvars)
+       (if (string-match "^[a-zA-Z_]+[a-zA-Z0-9_]*=" env)
+           (let* ((var (split-string env "="))
+                  (k (car var))
+                  (v (cadr var)))
+             (spacemacs-buffer/message "  - %s=%s" k v)
+             (when (string-equal "PATH" k)
+               (let ((paths (split-string v path-separator)))
+                 (dolist (p paths)
+                   (add-to-list 'exec-path p))))
+             (setenv k v))))
+     ;; be sure we keep the default shell in this Emacs session
+     ;; this is to prevent potential issues with packages which could
+     ;; expect a default shell
+     (setenv "SHELL" shell-file-name))))
+
+
+
 (defun spacemacs/state-color-face (state)
   "Return the symbol of the face for the given STATE."
   (intern (format "spacemacs-%s-face" (symbol-name state))))
@@ -136,11 +170,11 @@ the boundaries of the text object."
                                           ,(regexp-quote start)
                                           ,(regexp-quote end))
      (with-eval-after-load 'evil-surround
-       (push (cons (string-to-char ,key)
-                   (if ,end
-                       (cons ,start ,end)
-                     ,start))
-             evil-surround-pairs-alist))))
+       (add-to-list 'evil-surround-pairs-alist
+                    (cons (string-to-char ,key)
+                          (if ,end
+                              (cons ,start ,end)
+                            ,start))))))
 
 (defmacro spacemacs|define-text-object-regexp (key name start-regexp end-regexp)
   "Define a text object.
@@ -185,42 +219,3 @@ Example: (evil-map visual \"<\" \"<gv\")"
   "Custom hint documentation format for keys."
   (format (format "[%%%ds] %%%ds" key-width (- -1 doc-width))
           key doc))
-
-
-
-;; exec-path-from-shell
-
-(defun spacemacs//initialize-exec-path-from-shell (&optional force)
-  "Initialize exec-path and cache its value.
-Load from cache file if cache file exists and FORCE is nil."
-  (when (display-graphic-p)
-    (when force (delete-file spacemacs-env-vars-file))
-    (if (file-exists-p spacemacs-env-vars-file)
-        (load spacemacs-env-vars-file nil (not init-file-debug))
-      (require 'exec-path-from-shell)
-      (exec-path-from-shell-initialize)
-      (spacemacs/dump-vars-to-file '(exec-path) spacemacs-env-vars-file))))
-
-(defun spacemacs/import-path ()
-  "Import value of PATH."
-  (interactive)
-  (spacemacs//initialize-exec-path-from-shell t))
-
-(defun spacemacs/copy-env-list (vars)
-  "Copy list of env. VARS using `exec-path-from-shell'.
-Cache the found value in `spacemacs-env-vars-file'."
-  (dolist (var vars)
-    (unless (or (getenv var)
-                (null (configuration-layer/package-used-p
-                       'exec-path-from-shell)))
-      (require 'exec-path-from-shell)
-      (exec-path-from-shell-copy-env var)
-      (with-temp-file spacemacs-env-vars-file
-        (when (file-exists-p spacemacs-env-vars-file)
-          (insert-file-contents spacemacs-env-vars-file))
-        (print (list 'setenv var
-                     (if (getenv var)
-                         (getenv var)
-                       (format "%s-NOTFOUND-PLEASE-DEFINE-IN-YOUR-SHELL"
-                               var)))
-               (current-buffer))))))
