@@ -31,3 +31,17 @@ using `cargo-process-run'."
              (shell-quote-argument output-file-name)
              (shell-quote-argument input-file-name)
              (shell-quote-argument output-file-name)))))
+
+(defun spacemacs//rust-setup-lsp ()
+  "Setup lsp backend."
+  (if (configuration-layer/layer-used-p 'lsp)
+      (progn
+        (require 'lsp-rust)
+        (lsp-rust-enable)
+        (spacemacs|add-company-backends
+          :backends company-lsp
+          :modes rust-mode
+          :append-hooks nil
+          :call-hooks t)
+        (push 'lsp-ui-peek-find-definitions spacemacs-jump-handlers-rust-mode))
+    (message "`lsp' layer is not installed, please add `lsp' layer to your dotfile.")))

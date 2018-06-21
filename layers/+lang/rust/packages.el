@@ -14,7 +14,8 @@
     cargo
     company
     counsel-gtags
-    racer
+    ;; racer
+    lsp-rust
     flycheck
     (flycheck-rust :requires flycheck)
     ggtags
@@ -107,3 +108,9 @@
       (spacemacs|hide-lighter racer-mode)
       (evilified-state-evilify-map racer-help-mode-map
         :mode racer-help-mode))))
+
+(defun rust/init-lsp-rust()
+  (use-package lsp-rust
+    :defer t
+    :commands 'lsp-rust-enable
+    :init (add-hook 'rust-mode-hook 'spacemacs//rust-setup-lsp)))

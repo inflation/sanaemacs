@@ -71,17 +71,7 @@
 (defun haskell/init-lsp-haskell ()
   (use-package lsp-haskell
     :defer t
-    :commands lsp-haskell-enable)
-  (if (configuration-layer/layer-used-p 'lsp)
-      (progn
-        (spacemacs|add-company-backends
-          :backends company-lsp
-          :modes haskell-mode)
-        (require 'lsp-haskell)
-        (push 'lsp-ui-peek-find-definitions
-              spacemacs-jump-handlers)
-        (lsp-haskell-enable))
-    (message "`lsp' layer is not installed, please add `lsp' layer to your dofile.")))
+    :commands lsp-haskell-enable))
 
 (defun haskell/init-helm-hoogle ()
   (use-package helm-hoogle

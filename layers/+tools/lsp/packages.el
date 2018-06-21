@@ -51,4 +51,8 @@
       (spacemacs//lsp-sync-peek-face)
       (add-hook 'spacemacs-post-theme-change-hook
                 #'spacemacs//lsp-sync-peek-face)
-      (define-key evil-normal-state-map (kbd "gr") 'lsp-ui-peek-find-references))))
+      (define-key
+        evil-normal-state-map (kbd "gr") 'lsp-ui-peek-find-references)
+      (define-key
+        evil-normal-state-map (kbd "gs") 'lsp-ui-find-workspace-symbol)
+    )))

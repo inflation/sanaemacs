@@ -107,7 +107,7 @@
           :modes haskell-mode)
         (require 'lsp-haskell)
         (push 'lsp-ui-peek-find-definitions
-              spacemacs-jump-handlers)
+              spacemacs-jump-handlers-haskell-mode)
         (lsp-haskell-enable))
     (message "`lsp' layer is not installed, please add `lsp' layer to your dofile.")))
 
