@@ -12,6 +12,7 @@
 
 (require 'subr-x nil 'noerror)
 (require 'core-emacs-backports)
+(require 'core-env)
 (require 'page-break-lines)
 (require 'core-hooks)
 (require 'core-debug)
@@ -145,6 +146,10 @@ the final step of executing code in `emacs-startup-hook'.")
   ;; check for new version
   (if dotspacemacs-mode-line-unicode-symbols
       (setq-default spacemacs-version-check-lighter "[⇪]"))
+  ;; load environment variables
+  (if (fboundp 'dotspacemacs/user-env)
+      (dotspacemacs/call-user-env)
+    (spacemacs/load-spacemacs-env))
   ;; install the dotfile if required
   (dotspacemacs/maybe-install-dotfile))
 
