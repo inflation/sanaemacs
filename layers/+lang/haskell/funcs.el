@@ -73,6 +73,7 @@
   (intero-mode)
   (dolist (mode haskell-modes)
     (spacemacs/set-leader-keys-for-major-mode mode
+      "gb" 'xref-pop-marker-stack
       "hi" 'intero-info
       "ht" 'intero-type-at
       "hT" 'haskell-intero/insert-type
