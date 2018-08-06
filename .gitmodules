@@ -1,0 +1,3 @@
+[submodule "private/pragmata-ligatures"]
+	path = private/pragmata-ligatures
+	url = https://github.com/inflation/pragmata-ligatures
