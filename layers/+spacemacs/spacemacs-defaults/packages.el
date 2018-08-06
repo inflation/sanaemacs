@@ -72,7 +72,7 @@
 
 (defun spacemacs-defaults/init-dired ()
   (spacemacs/set-leader-keys
-    "ad" 'dired
+    "ad" 'spacemacs/dired
     "fj" 'dired-jump
     "jd" 'dired-jump
     "jD" 'dired-jump-other-window))
@@ -438,7 +438,7 @@
 
 (defun spacemacs-defaults/init-zone ()
   (use-package zone
-    :defer t
+    :commands (zone zone-when-idle)
     :init
     (progn
       (when (and dotspacemacs-zone-out-when-idle
@@ -466,4 +466,8 @@
                            ;; zone-pgm-stress-destress
                            ;; zone-pgm-random-life
                            ])
-      (spacemacs/set-leader-keys "TZ" 'zone))))
+      (spacemacs/set-leader-keys "TZ" 'zone))
+    :config
+    ;; be sure to disable running zone if the user does not want it
+    (unless dotspacemacs-zone-out-when-idle
+      (zone-leave-me-alone))))
