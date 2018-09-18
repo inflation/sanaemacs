@@ -565,6 +565,21 @@ ones created by `magit' and `dired'."
       (message "%s" (kill-new file-path))
     (message "WARNING: Current buffer is not attached to a file!")))
 
+(defun spacemacs/copy-file-name ()
+  "Copy and show the file name of the current buffer."
+  (interactive)
+  (if-let (file-name (file-name-nondirectory (spacemacs--file-path)))
+      (message "%s" (kill-new file-name))
+    (message "WARNING: Current buffer is not attached to a file!")))
+
+(defun spacemacs/copy-file-name-base ()
+  "Copy and show the file name without its final extension of the current
+buffer."
+  (interactive)
+  (if-let (file-name (file-name-base (spacemacs--file-path)))
+      (message "%s" (kill-new file-name))
+    (message "WARNING: Current buffer is not attached to a file!")))
+
 (defun spacemacs/copy-file-path-with-line ()
   "Copy and show the file path of the current buffer, including line number."
   (interactive)
@@ -1228,23 +1243,6 @@ using a visual block/rectangle selection."
     (set-mark p1)))
 
 ;; END linum mouse helpers
-
-;; From http://xugx2007.blogspot.ca/2007/06/benjamin-rutts-emacs-c-development-tips.html
-(setq compilation-finish-function
-      (lambda (buf str)
-
-        (let ((case-fold-search nil))
-          (if (or (string-match "exited abnormally" str)
-                  (string-match "FAILED" (buffer-string)))
-
-              ;; there were errors
-              (message "There were errors. SPC-e-n to visit.")
-            (unless (or (string-match "Grep finished" (buffer-string))
-                        (string-match "Ag finished" (buffer-string))
-                        (string-match "nosetests" (buffer-name)))
-
-              ;; no errors
-              (message "compilation ok."))))))
 
 ;; from http://www.emacswiki.org/emacs/WordCount
 (defun spacemacs/count-words-analysis (start end)
