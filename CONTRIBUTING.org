@@ -28,7 +28,7 @@ Thanks! :heart: :heart: :heart:
     - [[#file-header][File header]]
     - [[#author-of-a-new-layer][Author of a new layer]]
     - [[#contributor-to-an-existing-layer][Contributor to an existing layer]]
-  - [[#contributing-a-keybinding][Contributing a keybinding]]
+  - [[#contributing-a-key-binding][Contributing a key binding]]
   - [[#contributing-a-banner][Contributing a banner]]
 - [[#reviewing-pull-requests][Reviewing Pull Requests]]
   - [[#using-magit-to-quickly-test-prs][Using Magit to quickly test PRs]]
@@ -205,10 +205,10 @@ name.
 If you are contributing to an already existing layer, you should not modify any
 header file.
 
-** Contributing a keybinding
-Keybindings are an important part of spacemacs.
+** Contributing a key binding
+Key bindings are an important part of spacemacs.
 
-First if you want to have some personal keybindings, you can freely bind them
+First if you want to have some personal key bindings, you can freely bind them
 inside the ~SPC o~ and ~SPC m o~ prefixes which are reserved for the user. This
 can be done from the =dotspacemacs/user-config= function of your =.spacemacs=
 file and don’t require any contribution to Spacemacs.
@@ -217,9 +217,9 @@ If you think it worth contributing a new key bindings then be sure to read
 the [[https://github.com/syl20bnr/spacemacs/blob/develop/doc/CONVENTIONS.org][CONVENTIONS.org]] file to find the best key bindings, then create a
 PR with your changes.
 
-*ALWAYS* document your new keybindings or keybindings changes inside the
+*ALWAYS* document your new key bindings or key bindings changes inside the
 relevant documentation file. It should be the layer’s =README.org= file for
-layer’s keybindings, or =DOCUMENTATION.org= for general Spacemacs key
+layer’s key bindings, or =DOCUMENTATION.org= for general Spacemacs key
 bindings.
 
 ** Contributing a banner
@@ -308,27 +308,27 @@ testable layer is enabled in turn.
 To add tests for a layer, do the following:
 1. Create a subfolder of =tests/= corresponding to the layer you want to test.
 2. Write a file called =dotspacemacs.el= in that folder. It should be a minimal
-  dotfile that enables the layer in question (and other layers it may depend
-  on).
+   dotfile that enables the layer in question (and other layers it may depend
+   on).
 3. Write a number of files with tests. Please try to separate unit and
-  functional tests. Look at existing tests for clues.
+   functional tests. Look at existing tests for clues.
 4. Write a =Makefile= in that folder. It should define three variables.
-  - a list of additional files to load before testing (relative
-    to the root Spacemacs folder). This should typically be =init.el=.
-  - a list of unit test files in the current folder.
-  - a list of functional test files in the current folder.
+   - a list of additional files to load before testing (relative
+     to the root Spacemacs folder). This should typically be =init.el=.
+   - a list of unit test files in the current folder.
+   - a list of functional test files in the current folder.
 
-  See existing tests for examples.
+   See existing tests for examples.
 
-  #+BEGIN_SRC makefile
-    TEST_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+   #+BEGIN_SRC makefile
+     TEST_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-    LOAD_FILES = ...
-    UNIT_TEST_FILES = ...
-    FUNC_TEST_FILES = ...
+     LOAD_FILES = ...
+     UNIT_TEST_FILES = ...
+     FUNC_TEST_FILES = ...
 
-    include ../../spacemacs.mk
-  #+END_SRC
+     include ../../spacemacs.mk
+   #+END_SRC
 
 5. Add the new test to list of tests in =travis/run_build.sh=.
 
