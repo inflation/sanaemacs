@@ -33,15 +33,41 @@ using `cargo-process-run'."
              (shell-quote-argument output-file-name)))))
 
 (defun spacemacs//rust-setup-lsp ()
-  "Setup lsp backend."
+  "Setup lsp backend"
   (if (configuration-layer/layer-used-p 'lsp)
       (progn
-        (require 'lsp-rust)
-        (lsp-rust-enable)
+        (lsp-rust-enable))
+    (message "`lsp' layer is not installed, please add `lsp' layer to your dotfile.")))
+
+(defun spacemacs//rust-setup-racer ()
+  "Setup racer backend"
+  (progn
+    (racer-mode)))
+
+(defun spacemacs//rust-setup-backend ()
+  "Conditionally setup rust backend."
+  (pcase rust-backend
+    (`racer (spacemacs//rust-setup-racer))
+    (`lsp (spacemacs//rust-setup-lsp))))
+
+(defun spacemacs//rust-setup-lsp-company ()
+  "Setup lsp auto-completion."
+  (if (configuration-layer/layer-used-p 'lsp)
+      (progn
         (spacemacs|add-company-backends
           :backends company-lsp
-          :modes rust-mode
-          :append-hooks nil
-          :call-hooks t)
-        (push 'lsp-ui-peek-find-definitions spacemacs-jump-handlers-rust-mode))
+          :modes rust-mode))
     (message "`lsp' layer is not installed, please add `lsp' layer to your dotfile.")))
+
+(defun spacemacs//rust-setup-racer-company ()
+  "Setup racer auto-completion."
+        (spacemacs|add-company-backends
+          :backends company-capf
+          :modes rust-mode
+          :variables company-tooltip-align-annotations t))
+
+(defun spacemacs//rust-setup-company ()
+  "Conditionally setup company based on backend."
+  (pcase rust-backend
+    (`racer (spacemacs//rust-setup-racer-company))
+    (`lsp (spacemacs//rust-setup-lsp-company))))
