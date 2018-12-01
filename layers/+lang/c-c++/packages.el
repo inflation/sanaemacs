@@ -10,36 +10,37 @@
 ;;; License: GPLv3
 
 (setq c-c++-packages
-  '(
-     cc-mode
-     clang-format
-     company
-     (company-c-headers :requires company)
-     (company-rtags :requires company rtags)
-     company-ycmd
-     counsel-gtags
-     disaster
-     flycheck
-     (flycheck-rtags :requires flycheck rtags)
-     gdb-mi
-     ggtags
-     google-c-style
-     helm-cscope
-     helm-gtags
-     (helm-rtags :requires helm rtags)
-     (ivy-rtags :requires ivy rtags)
-     org
-     realgud
-     rtags
-     semantic
-     srefactor
-     stickyfunc-enhance
-     xcscope
-     ycmd
-     ;;lsp-backend
-     (cquery :requires lsp-mode)
-     (ccls :requires lsp-mode)
-     projectile))
+      '(
+        cc-mode
+        clang-format
+        company
+        (company-c-headers :requires company)
+        (company-rtags :requires company rtags)
+        company-ycmd
+        counsel-gtags
+        disaster
+        flycheck
+        (flycheck-rtags :requires flycheck rtags)
+        gdb-mi
+        ggtags
+        google-c-style
+        helm-cscope
+        helm-gtags
+        (helm-rtags :requires helm rtags)
+        (ivy-rtags :requires ivy rtags)
+        org
+        realgud
+        rtags
+        semantic
+        srefactor
+        stickyfunc-enhance
+        xcscope
+        ycmd
+        ;;lsp-backend
+        (cquery :requires lsp-mode)
+        (ccls :requires lsp-mode)
+        projectile
+        ))
 
 
 (defun c-c++/init-cc-mode ()
@@ -83,8 +84,6 @@
       (display-warning :error "`c-c++-enable-clang-support' ignored when using lsp backend")
       (progn
         (spacemacs|add-company-backends :backends company-clang :modes c-mode-common)
-        (when c-c++-enable-c++11
-          (setq company-clang-arguments '("-std=c++11")))
         (setq company-clang-prefix-guesser 'spacemacs/company-more-than-prefix-guesser)
         (spacemacs/add-to-hooks 'spacemacs/c-c++-load-clang-args c-c++-mode-hooks)
         ()))))
@@ -296,8 +295,7 @@
       (when c-c++-adopt-subprojects
         (setq projectile-project-root-files-top-down-recurring
           (append '("compile_commands.json"
-                     ".cquery"
-                     ".ccls")
+                     ".cquery")
             projectile-project-root-files-top-down-recurring))))))
 
 ;; END LSP BACKEND PACKAGES
